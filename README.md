@@ -1,33 +1,51 @@
-ZendSkeletonApplication
+Album Application Using Zend Framework 2
 =======================
 
 Introduction
 ------------
-This is a simple, skeleton application using the ZF2 MVC layer and module
-systems. This application is meant to be used as a starting place for those
-looking to get their feet wet with ZF2.
+This is a Zend Framework 2 application written using the Tutorial on Zend Framework's website
+It also includes the implementation of a Rest Module as well as Unit Testing with PHPUnit
 
 
 Installation
 ------------
+1. Clone this repo to somewhere sensible on your server
 
-Using Composer (recommended)
-----------------------------
-The recommended way to get a working copy of this project is to clone the repository
-and use composer to install dependencies:
+2. Download the composer.phar executable from http://getcomposer.org/composer.phar
 
-    cd my/project/dir
-    git clone git://github.com/zendframework/ZendSkeletonApplication.git
-    cd ZendSkeletonApplication
-    php composer.phar install
+    sh $ curl -s http://getcomposer.org/installer | php
 
-Using Git submodules
---------------------
-Alternatively, you can install using native git submodules:
+3. Run Composer: php composer.phar install
 
-    git clone git://github.com/zendframework/ZendSkeletonApplication.git --recursive
+4. Run Composer: `php composer.phar install` If this gives your problems, try nuking the `vendor` dir and doing it again. If it bitches about `some-long-hash` isn't a tree, run `php composer.php update` and then try `install` again.
 
-Virtual Host
-------------
-Afterwards, set up a virtual host to point to the public/ directory of the
-project and you should be ready to go!
+5. I am using Nginx as my webserver.
+
+    Create a nginx vhost that looks like the following
+
+    server {
+        root /www/zf2-tutorial/public/; #Change this as appropriate
+        index index.php;
+
+        error_log /var/log/nginx/proteus_error;
+        access_log /var/log/nginx/proteus_access;
+
+        server_name proteus.dev.mme.smplstrm.in; #Again - change this as needed
+
+        #This rewrites request to non-existent files to index.php
+        location / {
+                try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+                fastcgi_pass   127.0.0.1:9000;
+                fastcgi_index  index.php;
+                fastcgi_param APPLICATION_ENV production;
+                include        fastcgi_params;
+        }
+    }
+
+Requirements
+PHP 5.3+ (tested on PHP 5.3.6 FPM) Nginx 1.05+
+PHP Modules +Curl +MySQL +APC (recommended) +Suhosin (recommended)
+PHPUnit  Version 3.7
