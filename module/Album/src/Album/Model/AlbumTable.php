@@ -36,7 +36,7 @@ class AlbumTable extends AbstractTableGateway
         ));
         $row = $rowset->current();
 
-        if(!row){
+        if(!$row){
             throw new \Exception("Could not find row $id");
         }
         return $row;
@@ -51,8 +51,8 @@ class AlbumTable extends AbstractTableGateway
 
         $id = (int) $album->id;
         if($id == 0){
-            $this->insert($data);
-        }elseif($this->getAlbum($id)){
+            $id = $this->insert($data);
+        }elseif($this->getAlbum($data, array('id' => $id))){
             $this->update(
                 $data,
                 array(
@@ -62,6 +62,7 @@ class AlbumTable extends AbstractTableGateway
         }else{
             throw new \Exception('Form id does not exist');
         }
+        return $id;
     }
 
     public function deleteAlbum($id)

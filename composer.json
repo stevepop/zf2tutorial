@@ -8,7 +8,12 @@
     ],
     "homepage": "http://framework.zend.com/",
     "require": {
-        "php": ">=5.3.3",
-        "zendframework/zendframework": "2.*"
+        "php": ">=5.4",
+        "zendframework/zendframework": "2.*",
+        "phpunit/phpunit": "3.7.*"
+    },
+
+    "config": {
+        "bin-dir": "/usr/local/bin/"
     }
 }
